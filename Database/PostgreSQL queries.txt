@@ -2,3 +2,32 @@ psql -U mehdilagdimi -W postgres
 
 \c medical_appointment_platform;
 CREATE DATABASE medical_appointment_platform;
+
+
+CREATE TABLE IF NOT EXISTS users (
+	userRef VARCHAR(32) NOT NULL,
+    fName VARCHAR(30) NOT NULL,
+    lName VARCHAR(30) NOT NULL,
+    birthDate TIMESTAMP NOT NULL,
+    passw VARCHAR(256) NOT NULL,
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (userRef)
+);
+
+CREATE TABLE IF NOT EXISTS  slotsOrder(
+	slotID INT NOT NULL,
+    startTime INT NOT NULL,
+    PRIMARY KEY (slotID)
+);
+
+CREATE TABLE IF NOT EXISTS appointments(
+	apptmntID SERIAL NOT NULL ,
+    slotID INT NOT NULL,
+     userRef VARCHAR(32) NOT NULL,
+    apptmntDate DATE NOT NULL,
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (apptmntID),
+    FOREIGN KEY (slotID) REFERENCES slotsOrder(slotID) ON DELETE CASCADE,
+    FOREIGN KEY (userRef) REFERENCES users(userRef) ON DELETE CASCADE 
+);
+
