@@ -1,0 +1,4 @@
+psql -U mehdilagdimi -W postgres
+
+\c medical_appointment_platform;
+CREATE DATABASE medical_appointment_platform;

@@ -1,0 +1,30 @@
+SET SQL_MODE='ALLOW_INVALID_DATES';
+CREATE DATABASE medical_appointment_platform;
+USE medical_appointment_platform;
+
+CREATE TABLE users (
+	userRef VARCHAR(32) NOT NULL,
+    fName VARCHAR(30) NOT NULL,
+    lName VARCHAR(30) NOT NULL,
+    birthDate TIMESTAMP NOT NULL,
+    passw VARCHAR(256) NOT NULL,
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (userRef)
+);
+
+CREATE TABLE  slotsOrder(
+	slotID INT NOT NULL,
+    startTime INT NOT NULL,
+    PRIMARY KEY (slotID)
+);
+
+CREATE TABLE  appointments(
+	apptmntID INT NOT NULL AUTO_INCREMENT,
+    slotID INT NOT NULL,
+     userRef VARCHAR(32) NOT NULL,
+    apptmntDate DATE NOT NULL,
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (apptmntID),
+    FOREIGN KEY (slotID) REFERENCES slotsOrder(slotID) ON DELETE CASCADE,
+    FOREIGN KEY (userRef) REFERENCES users(userRef) ON DELETE CASCADE 
+);
