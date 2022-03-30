@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-const InputField = ({ type, content, usecase, label }) => {
-    const [input, setInput] = useState();
-    content = input;
+const InputField = ({ type, usecase, label, getContent}) => {
+    const [input, setInput] = useState('');
+    // content = input;
+    // console.log(content)
+    useEffect(() => {
+        getContent(input);
+    }, [input])
   return (
     <div className="form-control">
       <label>{label}</label>
