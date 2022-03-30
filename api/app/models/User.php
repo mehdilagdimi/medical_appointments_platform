@@ -1,12 +1,11 @@
 <?php
     class User extends Model{
 
-        public $id;
-        public $passengerID;
-        protected $phone;
-        protected $email;
-        protected $birthDate;
-        protected $passw;
+        private $userRef;
+        private $fName;
+        private $lName;
+        private $bDate;
+        private $passw;
 
 
         public function __construct(){
@@ -38,6 +37,12 @@
 
             $this->db->query("INSERT INTO $this->table (userRef, fName, lName, birthDate, passw) VALUES (:userRef, :fName, :lName, :birthDate, :passw)");
             
+            $this->userRef = htmlspecialchars(strip_tags($userRef));
+            $this->fName = htmlspecialchars(strip_tags($fName));
+            $this->lName = htmlspecialchars(strip_tags($lName));
+            $this->bDate = htmlspecialchars(strip_tags($birthDate));
+            $this->passw = htmlspecialchars(strip_tags($passw));
+
             $this->db->bind(':userRef', $userRef);
             $this->db->bind(':fName', $fName);
             $this->db->bind(':lName', $lName);

@@ -1,34 +1,42 @@
-import { useState} from 'react'
+import { useState, useContext } from 'react'
 
-
-
+import { FormInputs } from './InputsContext'
 import InputField from './InputField'
 
+// export const exchange = createContext(null);
 
 const Authenticate = ({ onAdd}) => {
-    const [input, setInput] = useState([]);
+    // const values = [];
+    // values.push(useContext(FormInputs));
+
+    const [fName, setfName] = useState('');
+    const [lName, setlName] = useState('');
+    const [birthDate, setbirthDate] = useState('');
+    const [passw, setPassw] = useState('0000');
+
     
     const onSubmit = (e) => {
-        e.preventDefault();
-        // console.log(content);
-        console.log(input);
-        // console.log(input[0]);
-        return
-        if(!input[0] || !input[1] || !input[2]){
+      e.preventDefault();
+      // console.log(fName);
+      // console.log(lName);
+      // console.log(birthDate);
+
+        if(!fName || !lName || !birthDate){
             alert("Please fill in all the fields")
             return;
         }
 
-        onAdd({ });
+        onAdd({fName, lName, birthDate});
     }
   return (
     <form className="add-form" onSubmit={onSubmit}>
-        <InputField usecase="First Name" type={"text"} getContent={(content) => setInput(input => [...input, content])}/>
+        <InputField label="First Name" usecase="First Name" type={"text"} getContent={(content) => setfName(content)}/>
         {/* <InputField label="First Name" usecase="First Name" type={"text"} content={(formInpt) => setInput(input => [...input, formInpt])}/> */}
-        {/* <InputField usecase="Last Name" type={"text"} content={input[1]}/> */}
-        <InputField label="Last Name" usecase="Last Name" type={"text"} getContent={(formInpt) => setInput(input => [...input, formInpt])}/>
-        {/* <InputField usecase="Birth Date" type={"date"} content={input[2]}/> */}
-        <InputField label="Birth Date" usecase="Birth Date" type={"date"} getContent={(formInpt) => setInput(input => [...input, formInpt])}/>
+
+        <InputField label="Last Name" usecase="Last Name" type={"text"} getContent={(content) => setlName(content)}/>
+        {/* <InputField label="Last Name" usecase="Last Name" type={"text"} getContent={(formInpt) => setInput(input => [...input, formInpt])}/> */}
+
+        <InputField label="Birth Date" usecase="Birth Date" type={"date"} getContent={(content) => setbirthDate(content)}/>
 
         <input className='btn btn-block' type='submit' value ='Authenticate' />
     </form>

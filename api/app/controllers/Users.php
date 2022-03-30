@@ -1,4 +1,11 @@
 <?php
+    header("Access-Control-Allow-Origin: *");
+    header("Content-Type: application/json; charset=UTF-8");
+    header("Access-Control-Allow-Methods: POST");
+    header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With");
+
+    $data = json_decode(file_get_contents("php://input"));
+    echo $data;
 
     function hashFunction  ($algo, $data) {
         return hash($algo, $data);
@@ -61,16 +68,25 @@
             // session_destroy();
             // session_start();
 
-            if(isset($_POST['fName']) & isset($_POST['lName']) & isset($_POST['birthdate'])){
+            // if(isset($_POST['fName']) & isset($_POST['lName']) & isset($_POST['birthdate'])){
                 // echo $_POST['fName'];
-                $this->fName = strtoupper($_POST['fName']);
-                $this->lName = strtoupper($_POST['lName']);
-                $this->bDate = strtoupper($_POST['birthdate']);
-                
-                if(isset($_POST['passw'])){
-                    $this->passw = hashFunction('sha256', $_POST['passw']);
+                // $data = json_decode(file_get_contents("php://input"));
+                echo $data;
+                $this->fName = strtoupper($data->fName);
+                $this->lName = strtoupper($data->lName);
+                $this->bDate = $data->birthDate;
+                $this->passw = $data->passw;
+
+                $this->passw = hashFunction('sha256', $_POST['passw']);
+                echo($this->fName);
+                echo($this->lName);
+                echo($this->bDate);
+                echo "hello";
+                return;
+              
+                    
             
-                }
+
 
                 //create user reference
                 $strToHash = "$this->fName" . "$this->lName" . "$this->bDate";       
@@ -78,9 +94,9 @@
                 // echo $this->userRef; 
 
                 $this->userModel->addUser($this->userRef, $this->fName, $this->lName, $this->bDate,  $this->passw);
-            }
+            // }
 
-            $this->view('pages/login');
+            // $this->view('pages/login');
          }
 
          public function deleteUser(){

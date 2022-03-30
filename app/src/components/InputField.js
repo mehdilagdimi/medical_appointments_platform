@@ -1,22 +1,28 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
+import { FormInputs } from './InputsContext'
 
-const InputField = ({ type, usecase, label, getContent}) => {
-    const [input, setInput] = useState('');
-    // content = input;
-    // console.log(content)
-    useEffect(() => {
-        getContent(input);
-    }, [input])
+
+const InputField = ({ type, usecase, label, getContent }) => {
+  const [inputValue, setInput] = useState("");
+
+  // content = input;
+  // console.log(content)
+  useEffect(() => {
+    getContent(inputValue);
+  }, [inputValue]);
+
   return (
-    <div className="form-control">
-      <label>{label}</label>
-      <input
-        type={type}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder={usecase}
-      />
-    </div>
+    <FormInputs.Provider value={inputValue}>
+      <div className="form-control">
+        <label>{label}</label>
+        <input
+          type={type}
+          value={inputValue}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder={usecase}
+        />
+      </div>
+    </FormInputs.Provider>
   );
 };
 
