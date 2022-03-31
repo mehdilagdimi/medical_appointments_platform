@@ -1,15 +1,17 @@
+import { useState, useEffect } from 'react'
 import Authenticate from "./components/Authenticate";
 import "./App.css";
 
 function App() {
+  const [userAuth, setAuth] = useState("LoggedOff");
+
+  useEffect (() => {
+    console.log(userAuth);
+  }, [userAuth])
 
   const addUser = async (user) => {
-    // console.log(typeof(user))
-    // console.log(JSON.stringify(user))
-    // console.log(user)
     var resClone;
-    // user = JSON.stringify(user)
-    // user = {"fName":"Asperiores irure lab","lName":"Qui sint eu veniam ","birthDate":"2016-04-02"}
+
     const res = await fetch(`http://localhost/Medical%20appointments%20platform/api/users/signup`, {
       method: "POST",
       headers: {
@@ -23,6 +25,11 @@ function App() {
 
         const data = await response.json()
         console.log('response data?', data)
+
+        if(data == "User already exists"){
+          console.log("test");
+          setAuth("LoggedOn")
+        }
       } 
       catch(error) {
         console.log('Error happened here!')
@@ -35,8 +42,7 @@ function App() {
     // .then((response) => {response.json())
     // .then((data)=> console.log(data))
     
-    console.log(res)
-    // return;
+    // console.log(res)
   };
 
   return (

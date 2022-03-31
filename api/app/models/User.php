@@ -16,12 +16,6 @@
         public function getUsers(){
             return $this->getTable();
         }
-        // public function getPassengers(){
-        //     $this->table = 'passengers';
-        //     $results = $this->getTable();
-        //     $this->table = 'users';
-        //     return $results;
-        // }
 
         // public function addPassenger($userID, $volID, $fName, $lName, $birthDate){
         //     $this->table = 'passengers';
@@ -98,12 +92,6 @@
             $this->db->query("DELETE FROM $this->table WHERE userID='$userID'");
             $this->db->execute();
         }
-        public function deletePassenger($id){
-            $this->table = 'passengers';
-            $this->db->query("DELETE FROM $this->table WHERE passengerID='$id'");
-            $this->db->execute();
-            $this->table = 'users';
-
-        }
+       
     }
 ?> 
