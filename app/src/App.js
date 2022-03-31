@@ -3,7 +3,7 @@ import Authenticate from "./components/Authenticate";
 import "./App.css";
 
 function App() {
-  const [userAuth, setAuth] = useState("LoggedOff");
+  const [userAuth, setAuth] = useState({LoggedIn : false});
 
   useEffect (() => {
     console.log(userAuth);
@@ -27,8 +27,11 @@ function App() {
         console.log('response data?', data)
 
         if(data == "User already exists"){
-          console.log("test");
-          setAuth("LoggedOn")
+          setAuth(() => {
+            return {
+              LoggedIn : true
+            }
+          })
         }
       } 
       catch(error) {
@@ -41,11 +44,12 @@ function App() {
     })
     // .then((response) => {response.json())
     // .then((data)=> console.log(data))
-    
+
     // console.log(res)
   };
 
   return (
+   
       <div className="container">
         <Authenticate onAdd={addUser} />
       </div>
