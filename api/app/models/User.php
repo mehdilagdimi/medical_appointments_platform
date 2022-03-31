@@ -33,35 +33,63 @@
         //     return $this->passengerID;
         // }
      
-        public function addUser($userRef, $fName, $lName, $birthDate, $passw){    
-
-            $this->db->query("INSERT INTO $this->table (userRef, fName, lName, birthDate, passw) VALUES (:userRef, :fName, :lName, :birthDate, :passw)");
+        public function addUser($userRef, $fName, $lName, $birthDate, $passw){ 
             
+
+            // $this->db->query("SELECT * FROM $this->table WHERE userRef = :userRef)");
+          
+            // $this->db->bind(':userRef', $userRef);
+            // if($this->db->execute()){
+            //     $this->db->query("INSERT INTO $this->table (userRef, fName, lName, birthDate, passw) VALUES (:userRef, :fName, :lName, :birthDate, :passw);
+            //     ");
+            // }    
+            // else {
+            //     echo json_encode("Error creating user");
+            //     return false;
+            // }
             $this->userRef = htmlspecialchars(strip_tags($userRef));
             $this->fName = htmlspecialchars(strip_tags($fName));
             $this->lName = htmlspecialchars(strip_tags($lName));
             $this->bDate = htmlspecialchars(strip_tags($birthDate));
             $this->passw = htmlspecialchars(strip_tags($passw));
+            
+            //check is user already exists
+            $this->getUser($this->userRef, $this->fName, $this->lName, $this->bDate, $this->passw );
+            if($this->db->rowCount() > 0) {
+                echo json_encode("User already exists");
+                return false;
+            }
 
-            $this->db->bind(':userRef', $userRef);
-            $this->db->bind(':fName', $fName);
-            $this->db->bind(':lName', $lName);
-            $this->db->bind(':birthDate', $birthDate);
-            $this->db->bind(':passw', $passw);
+            $this->db->query("INSERT INTO $this->table (userRef, fName, lName, birthDate, passw) VALUES (:userRef, :fName, :lName, :birthDate, :passw)
+               ON CONFLICT (userRef) DO NOTHING
+                ");
+                //  UPDATE 
+                //  SET userRef = :userRef
+                //  WHERE NOT EXISTS (SELECT 1 FROM $this->table WHERE userRef = :Ref)
+            // IF NOT FOUND THEN 
+            //     RAISE 'Can't add this user', :userRef;
+            // END IF;
+
+            $this->db->bind(':userRef', $this->userRef);
+            // $this->db->bind(':Ref', $userRef);
+            $this->db->bind(':fName', $this->fName);
+            $this->db->bind(':lName', $this->lName);
+            $this->db->bind(':birthDate', $this->bDate);
+            $this->db->bind(':passw', $this->passw);
             if($this->db->execute()){
                 echo json_encode("User added successfully");
                 return true;
             } else {
-                // printf("Statement Error:", $this->db->error);
                 // echo json_encode($this->db->error);
                 echo json_encode("Error creating user");
-                // return false;
+                return false;
             }
         }
 
-        public function getUser($email, $passw){
+        public function getUser(){
 
-                $this->db->query("SELECT * FROM $this->table WHERE email = '$email' AND passw = '$passw' ");
+                $this->db->query("SELECT * FROM $this->table WHERE userRef=:userRef");
+                $this->db->bind(':userRef', $this->userRef);
                 $result = $this->db->resultSet();
                 return $result;
         }
