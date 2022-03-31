@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 
 import { FormInputs } from './InputsContext'
 import InputField from './InputField'
@@ -9,24 +9,28 @@ const Authenticate = ({ onAdd}) => {
     // const values = [];
     // values.push(useContext(FormInputs));
 
-    const [fName, setfName] = useState('');
-    const [lName, setlName] = useState('');
-    const [birthDate, setbirthDate] = useState('');
-    const [passw, setPassw] = useState('0000');
-
+    const [fName, setfName] = useState("Youness");
+    const [lName, setlName] = useState("Yunes");
+    const [birthDate, setbirthDate] = useState("15-57-6768");
+    const [passw, setPassw] = useState("0000");
     
+    // useEffect(() => {
+    //   onAdd({ fName, lName, birthDate });
+    // }, [])
+    
+
     const onSubmit = (e) => {
       e.preventDefault();
       // console.log(fName);
       // console.log(lName);
       // console.log(birthDate);
 
-        if(!fName || !lName || !birthDate){
-            alert("Please fill in all the fields")
-            return;
-        }
+        // if(!fName || !lName || !birthDate){
+        //     alert("Please fill in all the fields")
+        //     return;
+        // }
 
-        onAdd({fName, lName, birthDate});
+        onAdd({ fName, lName, birthDate, passw });
     }
   return (
     <form className="add-form" onSubmit={onSubmit}>

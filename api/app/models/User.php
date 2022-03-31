@@ -48,7 +48,15 @@
             $this->db->bind(':lName', $lName);
             $this->db->bind(':birthDate', $birthDate);
             $this->db->bind(':passw', $passw);
-            $this->db->execute();
+            if($this->db->execute()){
+                echo json_encode("User added successfully");
+                return true;
+            } else {
+                // printf("Statement Error:", $this->db->error);
+                // echo json_encode($this->db->error);
+                echo json_encode("Error creating user");
+                // return false;
+            }
         }
 
         public function getUser($email, $passw){
