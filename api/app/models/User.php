@@ -16,16 +16,6 @@
         public function getUsers(){
             return $this->getTable();
         }
-
-        // public function addPassenger($userID, $volID, $fName, $lName, $birthDate){
-        //     $this->table = 'passengers';
-        //     $this->db->query("INSERT INTO $this->table (userID, volID, fName, lName, birthDate) VALUES ('$userID', '$volID', '$fName', '$lName', '$birthDate') ");      
-        //     $this->db->execute();
-        //     $this->id = 'passengerID';
-        //     $this->passengerID = $this->getRecordHighestID($this->id);
-        //     $this->table = 'users';
-        //     return $this->passengerID;
-        // }
      
         public function addUser($userRef, $fName, $lName, $birthDate, $passw){ 
             

@@ -2,6 +2,10 @@
     require_once ('Slot.php');
 
     Class Appointment extends Model{
+        public $slotId;
+        public $apptmntDate;
+        private $userRef;
+        public $createdAt;
 
         public function __construct(){
             parent::__construct();
@@ -10,13 +14,16 @@
             // $this->view = 'Appointments';
         }
         
-        public function getReservs(){
-            // return $this->getTable();
-            // $id = 'reservID';
-            $c = "dateReserv";
-            // echo $this->table;
-            $this->table = 'Appointments';
-            return $this->getTableOrder($c);
+        public function getApptmnts($id){
+            $this->userRef = $id;
+            $c = "apptmntDate";
+            $this->table = 'appointments';
+            $data = $this->getTableOrder($this->userRef, $c, 'ASC');
+            if($this->db->rowCount() > 0) {
+                return $data;
+            } else {
+                return false;
+            }
         }
 
         public function getUserReservs($id, $c){

@@ -16,10 +16,10 @@
             return $result;
         }
 
-        public function getTableOrder($c){
-            // $query = "SELECT * FROM " . $table; 
-            $this->db->query("SELECT * FROM " . $this->table . " ORDER BY " . $c . " DESC");
-            // $this->db->query("SELECT * FROM vols");
+        public function getTableOrder($userRef, $c, $orderBy){ 
+            $this->db->query("SELECT * FROM " . $this->table . " WHERE userRef=:userRef ORDER BY " . $c . " $orderBy");
+            //bind params
+            $this->db->bind(":userRef", $userRef);
             $result = $this->db->resultSet();
             return $result;
         }

@@ -21,19 +21,8 @@
         }
 
         //call showUsers because index is set up as default method so to make showUsers as default when requesting from Users class
-        public function index(){
-            // echo 'test new';
-            // session_start();
-            if(isset($_SESSION['loggedIn'])){
-                if(!$_SESSION['loggedIn']){
-                    header("location:" . URLROOT . "logins");
-                }
-                if($_SESSION['privilege'] == 'admin'){
-                    $this->showUsers();
-                }
-            } else {
-                header("location:" . URLROOT . "logins");
-            }
+        public function index($params = []){
+           $this->signup($params);
         }
 
 
@@ -48,10 +37,6 @@
             $this->view('dashboard/showUsers', $data);
         }
 
-        protected function setPassword(){
-            //
-        }
-
         public function deletePassenger(){
             if (isset($_POST['cancel']) || isset($_POST['delete'])){
                 $id = $_POST['id_passenger'];
@@ -59,14 +44,8 @@
             }
             header("location:" . URLROOT . "reservations");
         }
-        public function signup(){
-            // session_start();
-            // // session_unset();
-            // session_destroy();
-            // session_start();
-
-            // if(isset($_POST['fName']) & isset($_POST['lName']) & isset($_POST['birthdate'])){
-                // echo $_POST['fName'];
+        public function signup($params = []){
+     
                 $data = json_decode(file_get_contents("php://input"));
                 // echo $data;
                 // die();

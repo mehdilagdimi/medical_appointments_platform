@@ -1,85 +1,53 @@
 <?php
+     header("Access-Control-Allow-Origin: *");
+     header("Content-Type: application/json");
+     header("Access-Control-Allow-Methods: GET, POST");
+     header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With");
+
     require_once "Slots.php";
     class Appointments extends Controller{
+        private $userRef;
+
         public function __construct (){
-            $this->reservModel = $this->model('Reservation');
+            $this->apptmntModel = $this->model('Appointment');
             $this->userModel = $this->model('User');
-            $this->flightModel = $this->model('Flight');
         }
 
-        public  $availableSeats = [];
+        public  $userAppointments = [];
 
         //default
-        public function index(){
-            // session_start();
-            if(isset($_SESSION['loggedIn'])){
-
-                if(!$_SESSION['loggedIn']){
-                
-                    header("location:" . URLROOT . "logins");
-                }else {
-                    // echo "test";
-                    $this->showAppointments();
-                }
-            } else {
-                // echo "test";
-                header("location:" . URLROOT . "logins");
-            }
+        public function index($id){
+            $this->display($id);
         }
            
 
-        public function showAppointments(){
-            //display Appointments
-            // echo 
-            // session_start();
-        
-            $userID = $_SESSION['userID'];
-            //  echo $_SESSION['privilege'];
-            if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == TRUE){
-                if($_SESSION['privilege'] == 'admin'){
-                    $reservs = $this->reservModel->getReservs();
-                    $data = [
-                        'title' => 'List of Appointments',
-                        'Appointments' => $reservs 
-                    ];
-
-                    $this->view('dashboard/showAppointments', $data);
-                    // echo 'test';
-                } else {
-                    // echo "user Appointments view";
-                    $reservs = $this->reservModel->getUserReservs("userID", $userID);
-                    $data = [
-                        'title' => 'List of Appointments',
-                        'Appointments' => $reservs 
-                    ];
-                    
-                    $this->view('pages/Appointments', $data);
-                }
+        public function display($id){
+            // $data = json_decode(file_get_contents("php://input"));
+            $this->userRef = $id;
+            if($apptmnts = $this->apptmntModel->getApptmnts($this->userRef)){
+                echo json_encode($apptmnts);
             }
+            else {
+                echo json_encode("User has not made any appoinment");
+            }
+            
+            // if($data) {
+            //     $this->fName = strtoupper($data->fName);
+            //     $this->lName = strtoupper($data->lName);
+            //     $this->bDate = $data->birthDate;
+            //     $this->passw = $data->passw;
+
+            //     // $this->passw = hashFunction('sha256', $_POST['passw']);
+            //     $this->passw = hashFunction('sha256', $this->passw);
+
+            //     // echo(json_encode($this->fName));
+            //     // echo($this->lName);
+            //     // echo($this->bDate);
+            // }
         }
 
-        // public function cancelReservation(){
-        //     if (isset($_POST['cancel'])){
-        //         $id = $_POST['id_reserv'];
-        //         // header("location:" . URLROOT . "users/deletePassenger");
-        //         // $this->reservModel->deleteReserv($id);
-        //     }
-        // }
-
         public function addReservation(){
-            // echo '<pre>';
-            // print_r($_POST);
-            // echo $_POST['fName'][0];
-            // foreach($_POST['fName'] as $key => $c){
-            //     print_r($key) . " <br>";
-            //     print_r($c);
-            // }
-            // echo count($_POST['fName']);
-            // return;
-       
-            // session_start();
-            // echo $_POST['plane'];
-            // echo $_SESSION["privilege"]; 
+     
             if(isset($_SESSION["privilege"]) && isset($_POST['addReservation']) ){
                 if($_SESSION["privilege"] == 'user'){
 
