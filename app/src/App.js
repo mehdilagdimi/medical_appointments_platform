@@ -50,11 +50,14 @@ function App() {
 
         const data = await response.json()
         console.log('response data?', data)
+        console.log('data?', data["userRef"])
 
-        if(data == "User already exists"){
+        if(data["msg"] == "User already exists"){
           setAuth(() => {
             return {
-              LoggedIn : true
+              LoggedIn : true,
+              ref : data["userRef"],
+              hasRDV : false
             }
           })
         }
@@ -81,7 +84,7 @@ function App() {
             
             {!userAuth.LoggedIn && <Authenticate onAdd={addUser} />}
             {/* {userAuth.LoggedIn && <InputField label="Last Name" usecase="Last Name" type={"text"} getContent={(content) => console.log(content)} />} */}
-            {userAuth.LoggedIn && <GetAppointment onGetApptmnt={fetchAppointments}  />}
+            {userAuth.LoggedIn && <GetAppointment userRef={userAuth.ref} nGetApptmnt={fetchAppointments}  />}
             
           </div>
           </>

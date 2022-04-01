@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-const GetTask = ({ onGetApptmnt }) => {
-    const [userRef, setRef] = useState('')
+const GetTask = ({ onGetApptmnt, userRef }) => {
+    // const [userRef, setRef] = useState('')
     const onSubmit = (e) => {
         e.preventDefault();
         if(!userRef){
@@ -10,13 +10,14 @@ const GetTask = ({ onGetApptmnt }) => {
         }
         onGetApptmnt(userRef);
         
-        setRef('');
+        // setRef('');
     }
   return (
     <form className="add-form" onSubmit={onSubmit}>
     <div className="form-control">
-      <label>User ID</label>
-      <input type="text" value={userRef} onChange={(e) => setRef(e.target.value)} placeholder="Enter user reference" />
+      <label>Your ID</label>
+      <p>{userRef}</p>
+      {/* <input type="text" value={userRef} onChange={(e) => setRef(e.target.value)} placeholder="Enter user reference" /> */}
     </div>
     <input className='btn btn-block' type='submit' value ='My Appointments' />
   </form>

@@ -40,7 +40,7 @@
             //check is user already exists
             $this->getUser($this->userRef, $this->fName, $this->lName, $this->bDate, $this->passw );
             if($this->db->rowCount() > 0) {
-                echo json_encode("User already exists");
+                echo json_encode(array("msg" => "User already exists", "userRef" => $this->userRef));
                 return false;
             }
 
@@ -61,7 +61,7 @@
             $this->db->bind(':birthDate', $this->bDate);
             $this->db->bind(':passw', $this->passw);
             if($this->db->execute()){
-                echo json_encode("User added successfully");
+                echo json_encode(array("msg" => "User added successfully", "userRef" => $this->userRef));
                 return true;
             } else {
                 // echo json_encode($this->db->error);
@@ -77,7 +77,7 @@
                 $result = $this->db->resultSet();
                 return $result;
         }
-
+ 
         public function deleteUser($userID){
             $this->db->query("DELETE FROM $this->table WHERE userID='$userID'");
             $this->db->execute();
