@@ -1,5 +1,6 @@
 import { useState } from 'react'
-
+import { Link } from 'react-router-dom'
+ 
 const GetTask = ({ onGetApptmnt, userRef }) => {
     // const [userRef, setRef] = useState('')
     const onSubmit = (e) => {
@@ -8,7 +9,8 @@ const GetTask = ({ onGetApptmnt, userRef }) => {
             alert('Enter an ID');
             return;
         }
-        onGetApptmnt(userRef);
+        // onGetApptmnt(true);
+        // userRef(userRef);
         
         // setRef('');
     }
@@ -19,7 +21,10 @@ const GetTask = ({ onGetApptmnt, userRef }) => {
       <p>{userRef}</p>
       {/* <input type="text" value={userRef} onChange={(e) => setRef(e.target.value)} placeholder="Enter user reference" /> */}
     </div>
-    <input className='btn btn-block' type='submit' value ='My Appointments' />
+    <Link to="/appointments">
+      <input className='btn btn-block' type='submit' value ='My Appointments' />
+    </Link>
+
   </form>
   )
 }

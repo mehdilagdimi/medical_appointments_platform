@@ -27,28 +27,13 @@
 
 
         public function showUsers(){
-            $users = $this->userModel->getUsers();
-            $data = [
-                'title' => 'List of registered users',
-                'users' => $users
-            ];
-            
-            // $this->view('users/showUsers', $data);
-            $this->view('dashboard/showUsers', $data);
+          
         }
 
-        public function deletePassenger(){
-            if (isset($_POST['cancel']) || isset($_POST['delete'])){
-                $id = $_POST['id_passenger'];
-                $this->userModel->deletePassenger($id);
-            }
-            header("location:" . URLROOT . "reservations");
-        }
         public function signup($params = []){
      
                 $data = json_decode(file_get_contents("php://input"));
-                // echo $data;
-                // die();
+
                 if($data) {
                     $this->fName = strtoupper($data->fName);
                     $this->lName = strtoupper($data->lName);
@@ -58,43 +43,32 @@
                     // $this->passw = hashFunction('sha256', $_POST['passw']);
                     $this->passw = hashFunction('sha256', $this->passw);
 
-                    // echo(json_encode($this->fName));
-                    // echo($this->lName);
-                    // echo($this->bDate);
+                     //create user reference
+                    $strToHash = "$this->fName" . "$this->lName" . "$this->bDate";       
+                    $this->userRef = hashFunction('md5', $strToHash);
+                    // echo $this->userRef; 
+                    $result = $this->userModel->addUser($this->userRef, $this->fName, $this->lName, $this->bDate,  $this->passw);
+                    if($result === 1){
+                        echo json_encode(array("msg" => "User added successfully", "userRef" => $this->userRef));
+                    } else if(!$result) {
+                        echo json_encode(array("msg" => "User already exists", "userRef" => $this->userRef));
+                    } else if ($result === -1){
+                        echo json_encode(array("msg"=>"Error creating user", "userRef" => $this->userRef));
+                    }
+
+                } else {
+                    echo json_encode("No data has been received from frontend");
                 }
-              
-                // echo "hello";
-                // return;
-              
-                //create user reference
-                $strToHash = "$this->fName" . "$this->lName" . "$this->bDate";       
-                $this->userRef = hashFunction('md5', $strToHash);
-                // echo $this->userRef; 
-
-                $this->userModel->addUser($this->userRef, $this->fName, $this->lName, $this->bDate,  $this->passw);
-            // }
-
-            // $this->view('pages/login');
+               
          }
 
          public function deleteUser(){
-            if (isset($_POST['delete'])){
-                $id = $_POST['id_user'];
-                $this->userModel->deleteUser($id);
-            }
+           
          }
-        // public function showGuests()
-        // public function showGuests(){
-        //     //??
-        // }
-        // public function tste($id)
-        // {
-        //     echo $id[0];
-        //     echo "<br>";
-        //     echo $id[1];
-        //     // echo $id;
-          
+
+        //  public function test($id){
+        //     echo json_encode($id);
         //     return;
-        // }
+        //  }
+  
     }
-?>

@@ -10,29 +10,15 @@ import GetAppointment from './components/getAppointments'
 import "./App.css";
 
 function App() {
-  const [userAuth, setAuth] = useState({LoggedIn : false, ref:"", hasRDV : false});
+  const [userAuth, setAuth] = useState({LoggedIn : false, Ref:"", hasRDV : false});
+  const [showApptmnts, setShowApptmnts] = useState(false);
 
   useEffect (() => {
     console.log(userAuth);
-  }, [userAuth])
+    console.log(showApptmnts);
+  }, [userAuth, showApptmnts])
 
-  const fetchAppointments = async (userRef) => {
-    const data = fetch(`http://localhost/Medical%20appointments%20platform/api/appointments/display/${userRef}`)
-    .then(async (res) => {
-      if(res.ok){
-        const data = await res.json();
-        console.log(data);
-        return data;
-      }
-      else { throw new Error("Invalid user ref")}
-    }).catch((err) => {
-      console.log("Error")
-      alert(err);
-    })
-
-    return data;
-  }
-
+  
   //add new user
   const addUser = async (user) => {
     var resClone;
@@ -56,7 +42,7 @@ function App() {
           setAuth(() => {
             return {
               LoggedIn : true,
-              ref : data["userRef"],
+              Ref : data["userRef"],
               hasRDV : false
             }
           })
@@ -72,29 +58,34 @@ function App() {
     })
   };
 
+
   return (
+    <>
       <Router>
+      <div className="container">
+      {/* {!userAuth.LoggedIn && <Authenticate onAdd={addUser} />} */}
         <Routes>
          <Route path='/' element={
            <>
-            <div className="container">
+            {!userAuth.LoggedIn && <Authenticate onAdd={addUser} />}
               <div className="flex">
-                {userAuth.LoggedIn && <Button addClass="border bold" btnName='Make an appointment' color='green' bgColor="white" link='/appointments' />}
+                {userAuth.LoggedIn && <Button addClass="border bold" btnName='Make an appointment' color='green' bgColor="white" link='/slots' />}
               </div>
             
-            {!userAuth.LoggedIn && <Authenticate onAdd={addUser} />}
-            {/* {userAuth.LoggedIn && <InputField label="Last Name" usecase="Last Name" type={"text"} getContent={(content) => console.log(content)} />} */}
-            {userAuth.LoggedIn && <GetAppointment userRef={userAuth.ref} nGetApptmnt={fetchAppointments}  />}
+            {userAuth.LoggedIn && <GetAppointment userRef={userAuth.Ref} onGetApptmnt={(setShow) => setShowApptmnts(true)}  />}
             
-          </div>
+            {/* {showApptmnts && <Appointments userRef={userAuth.Ref} showApptmnts={showApptmnts} />} */}
+
           </>
          } />
 
           <Route path='/slots' element={<Slots />} />
-          <Route path='/appointments' element={<Appointments />} />
+          <Route path='/appointments' element={<Appointments userRef={userAuth.Ref} />} />
         </Routes>
+        </div>
       
       </Router>
+    </>
   );
 }
 

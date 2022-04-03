@@ -7,10 +7,14 @@
     require_once "Slots.php";
     class Appointments extends Controller{
         private $userRef;
+        public $slot;
+        public $slotid;
+        public $startTime;
+        public $apptmntDate;
 
         public function __construct (){
             $this->apptmntModel = $this->model('Appointment');
-            $this->userModel = $this->model('User');
+            $this->slotModel = $this->model('Slot');
         }
 
         public  $userAppointments = [];
@@ -21,120 +25,51 @@
         }
            
 
-        public function display($id){
+        public function display($id = null){
             // $data = json_decode(file_get_contents("php://input"));
+
+            // echo json_encode($id);
+            // return; 
             $this->userRef = $id;
-            if($apptmnts = $this->apptmntModel->getApptmnts($this->userRef)){
+            $apptmnts = $this->apptmntModel->getApptmnts($this->userRef);
+
+            if($apptmnts){
+                foreach($apptmnts as $apptmnt){
+                    $apptmnt->starttime = $this->slotModel->getSlot($apptmnt->slotid);
+                    // echo json_encode($apptmnt->starttime);
+                }
                 echo json_encode($apptmnts);
             }
             else {
-                echo json_encode("User has not made any appoinment");
+                // echo json_encode($id);
+                // echo json_encode($apptmnts);
+                echo json_encode(array("msg" => "User has not made any appoinment"));
             }
-            
-            // if($data) {
-            //     $this->fName = strtoupper($data->fName);
-            //     $this->lName = strtoupper($data->lName);
-            //     $this->bDate = $data->birthDate;
-            //     $this->passw = $data->passw;
 
-            //     // $this->passw = hashFunction('sha256', $_POST['passw']);
-            //     $this->passw = hashFunction('sha256', $this->passw);
-
-            //     // echo(json_encode($this->fName));
-            //     // echo($this->lName);
-            //     // echo($this->bDate);
-            // }
         }
 
-        public function addReservation(){
-     
-            if(isset($_SESSION["privilege"]) && isset($_POST['addReservation']) ){
-                if($_SESSION["privilege"] == 'user'){
+        public function makeAppointment(){
 
-                    if($_POST['type'] == 'roundTrip'){
-                        // if($_SESSION['roundTrip'] == 'going'){
-                            // $roundT = $_SESSION['roundTrip'] = true;
-                            $roundT = true;
-                        // }
-                    } else {
-                        // $_SESSION['roundTrip'] = false;
-                        $roundT = false;
-                    }  
-                   
-                    //verify availabel seats
-                    $volID = $_POST['volID'];
-                    $flight = $this->flightModel->getSpecific('volID', $volID, "volID");
-                    $availableSeats[0] = $flight[0]->availableSeats;
-                   
+        $data = json_decode(file_get_contents("php://input"));
 
-                    if($roundT){
-                        $volIDReturn = $_POST['volIDReturn'];
-                        $flightReturn = $this->flightModel->getSpecific('volID', $volIDReturn, "volID");
-                        $availableSeats[1] = $flightReturn[0]->availableSeats;
-                    }
+        if($data) {
+            $this->userRef = $data->userRef;
+            $this->slot = $data->slot;
+            $this->apptmntDate = $data->apptmntDate;
 
-
-                    // $numOfReserv = 1; //default is one, otherwise it is dependant on how many reservation the user wants to book
-                    $numOfReserv = count($_POST['fName']);  //get number of passengers to be added
-
-                    // echo $flight[0]->availableSeats;
-                    foreach($availableSeats as $s){
-                        if($s < $numOfReserv){
-                            if($s == 0){
-                                echo "No seat is available on this flight. Choose another one";
-                                $_POST = [];
-                                return;
-                            }
-                            else {
-                                // echo "Only $s seats are available on this flight. $s Appointments will be created";
-                                return; 
-                            }
-                        }
-                    }
-                    
-                    // echo "hello";
-                    // echo $volID;
-                    for($i = 0; $i <  $numOfReserv; $i++){
-                            $userID = $_SESSION['userID']; // set this when logging in => change logins controller
-                            // $volID = $_POST['volID'];
-                            $fName = $_POST['fName'][$i];
-                            $lName =  $_POST['lName'][$i];
-                            $birthDate = $_POST['birthDate'][$i];
-                            $seatNum = $_POST['seatNumG'][$i];
-                            // $goingComing =  $_POST['goingComing'] = 'going'; //default value change it dynamically according to form
-                            $goingComing = 'going';
-                            // echo "testing going coming POST" . $_POST['goingComing'];
-
-                            // if($_POST['type'] == 'roundTrip'){
-                            //     // if($_SESSION['roundTrip'] == 'going'){
-                            //         $_SESSION['roundTrip'] = true;
-                            //     // }
-                            // } else {
-                            //     $_SESSION['roundTrip'] = false;
-                            // }                
-                            
-                            $this->flightModel->updateSeatNum($volID, $availableSeats[0] - 1);
-                            $passengerID = $this->userModel->addPassenger($userID, $volID, $fName, $lName, $birthDate);
-                            $this->reservModel->addReservation($passengerID, $goingComing, $seatNum); 
-
-                            if($roundT){
-                                $seatNum = $_POST['seatNumC'][$i];
-                                $goingComing = 'coming'; 
-                                $this->flightModel->updateSeatNum($volIDReturn, $availableSeats[1] - 1);
-                                $passengerIDRet = $this->userModel->addPassenger($userID, $volIDReturn, $fName, $lName, $birthDate);
-                                $this->reservModel->addReservation($passengerIDRet, $goingComing, $seatNum);
-                            }
-                                      
-                    }
-                        // $airportID = $this->airportModel->getAirportID($airportTO);
-                        // $this->flightModel->addDestination($volID, $airportID);
+            $result = $this->apptmntModel->addAppointment($this->userRef,  $this->slot, $this->apptmntDate);
+            if($result === 1){
+                echo json_encode(array("msg" => "Appointment added successfully", "userRef" => $this->userRef));
+            } else if(!$result) {
+                echo json_encode(array("msg" => "Appointment already exists", "userRef" => $this->userRef));
+            } else if($result === -1) {
+                echo json_encode(array("msg"=>"Error creating appointment", "userRef" => $this->userRef));
             }
-            $_POST = [];
+
+        } else {
+            echo json_encode("No data has been received from frontend");
+        };            
             
-            header("location:" . URLROOT ."Appointments/showAppointments");
-            // $this->setReadableData();
-          
-            }
         }
     }
 ?>

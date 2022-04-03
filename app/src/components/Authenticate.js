@@ -9,10 +9,10 @@ const Authenticate = ({ onAdd}) => {
     // const values = [];
     // values.push(useContext(FormInputs));
 
-    const [fName, setfName] = useState("Youness");
-    const [lName, setlName] = useState("Yunes");
-    const [birthDate, setbirthDate] = useState("15-57-6768");
-    const [passw, setPassw] = useState("0000");
+    const [fName, setfName] = useState("");
+    const [lName, setlName] = useState("");
+    const [birthDate, setbirthDate] = useState("");
+    const [passw, setPassw] = useState("");
     
     // useEffect(() => {
     //   onAdd({ fName, lName, birthDate });

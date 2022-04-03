@@ -1,8 +1,10 @@
 <?php
     class Slot extends Model{
+        public $slotID;
+
         public function __construct(){
             parent::__construct();
-            $this->table = 'Slots';
+            $this->table = 'slotsOrder';
         }
 
         
@@ -11,13 +13,16 @@
             return $this->getTable();
         }
 
-        public function getSlotID($Slot){
-            $this->db->query("SELECT * FROM $this->table WHERE SlotAdress='$Slot'");
-            // $this->db->query("SELECT SlotID FROM $this->table WHERE SlotAdress='$Slot'");
-            // $id = $this->db->single();
-            //return $id;
+        public function getSlot($slotID){
+            $this->slotID = $slotID;
+
+            $this->db->query("SELECT startTime FROM $this->table WHERE slotID=:slotID");
+            $this->db->bind(":slotID", $this->slotID);
+
             $record = $this->db->single();
-            return $record->SlotID;
+            // echo json_encode($record->starttime);
+            // return;
+            return $record->starttime;
          }
 
         public function deleteSlot($SlotID){

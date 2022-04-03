@@ -40,7 +40,8 @@
             //check is user already exists
             $this->getUser($this->userRef, $this->fName, $this->lName, $this->bDate, $this->passw );
             if($this->db->rowCount() > 0) {
-                echo json_encode(array("msg" => "User already exists", "userRef" => $this->userRef));
+                // echo json_encode(array("msg" => "User already exists", "userRef" => $this->userRef));
+                // return false;
                 return false;
             }
 
@@ -61,12 +62,12 @@
             $this->db->bind(':birthDate', $this->bDate);
             $this->db->bind(':passw', $this->passw);
             if($this->db->execute()){
-                echo json_encode(array("msg" => "User added successfully", "userRef" => $this->userRef));
-                return true;
+                // echo json_encode(array("msg" => "User added successfully", "userRef" => $this->userRef));
+                return 1;
             } else {
                 // echo json_encode($this->db->error);
-                echo json_encode("Error creating user");
-                return false;
+                // echo json_encode(array("msg" => "Error creating user", "userRef" => $this->userRef));
+                return -1;
             }
         }
 
