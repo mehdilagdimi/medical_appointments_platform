@@ -12,8 +12,22 @@ body {
 
 .flex{
   display : flex;
+  
+}
+.flex-column {
+  flex-direction: column;
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex-end {
   justify-content: flex-end;
 }
+
+.flex-evenly {
+  justify-content: space-evenly;
+}
+
 .border{
   border : 2px solid black !important;
   /* border-color: black; */
@@ -25,6 +39,20 @@ body {
   max-width: 600px;
   margin: 100px auto;
   overflow: auto;
+  min-height: 300px;
+  border: 1px solid rgb(15, 16, 16);
+  padding: 30px;
+  border-radius: 5px;
+}
+.container-custom-2 {
+  /* min-width: 600px; */
+  /* position: absolute; */
+  width: 1000px;
+  max-width: 1400px;
+  margin: 100px auto;
+  /* margin-left: -100px; */
+  overflow: auto;
+  
   min-height: 300px;
   border: 1px solid steelblue;
   padding: 30px;

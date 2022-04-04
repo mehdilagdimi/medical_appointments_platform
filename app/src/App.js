@@ -6,7 +6,7 @@ import Slots from "./components/Slots.js";
 import Appointments from "./components/Appointments";
 import InputField from './components/InputField'
 import Button from './components/Button'
-import GetAppointment from './components/getAppointments'
+import GetAppointments from './components/getAppointments'
 import "./App.css";
 
 function App() {
@@ -62,28 +62,38 @@ function App() {
   return (
     <>
       <Router>
-      <div className="container">
+
+      
       {/* {!userAuth.LoggedIn && <Authenticate onAdd={addUser} />} */}
         <Routes>
          <Route path='/' element={
            <>
+           <div className="container">
             {!userAuth.LoggedIn && <Authenticate onAdd={addUser} />}
-              <div className="flex">
+              <div className="flex flex-end">
                 {userAuth.LoggedIn && <Button addClass="border bold" btnName='Make an appointment' color='green' bgColor="white" link='/slots' />}
               </div>
             
-            {userAuth.LoggedIn && <GetAppointment userRef={userAuth.Ref} onGetApptmnt={(setShow) => setShowApptmnts(true)}  />}
+            {userAuth.LoggedIn && <GetAppointments userRef={userAuth.Ref} />}
             
             {/* {showApptmnts && <Appointments userRef={userAuth.Ref} showApptmnts={showApptmnts} />} */}
-
+            </div>
           </>
          } />
-
-          <Route path='/slots' element={<Slots />} />
-          <Route path='/appointments' element={<Appointments userRef={userAuth.Ref} />} />
+          
+          <Route path='/appointments' element={
+            <>
+            <div className="container">
+            <Appointments userRef={userAuth.Ref} />
+            </div>
+            </>
+          } />
+       
         </Routes>
-        </div>
-      
+     
+      <Routes>
+      <Route path='/slots' element={<Slots />} />
+      </Routes>
       </Router>
     </>
   );
