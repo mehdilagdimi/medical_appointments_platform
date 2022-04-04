@@ -59,6 +59,11 @@ body {
   border-radius: 5px;
 }
 
+.inactiveApptmnt{
+  color : red;
+  background-color: white !important;
+  cursor: not-allowed !important;
+}
 .header {
   display: flex;
   justify-content: space-between;

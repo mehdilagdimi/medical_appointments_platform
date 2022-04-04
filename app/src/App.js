@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
+import useLocalStorage from './Custom hooks/useLocalStorage'
+
 import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom' 
+
 
 import Authenticate from "./components/Authenticate";
 import Slots from "./components/Slots.js";
@@ -10,13 +13,15 @@ import GetAppointments from './components/getAppointments'
 import "./App.css";
 
 function App() {
-  const [userAuth, setAuth] = useState({LoggedIn : false, Ref:"", hasRDV : false});
+  // const [userAuth, setAuth] = useState({LoggedIn : false, Ref:"", hasRDV : false});
+  const [userRef, setAuth] = useLocalStorage("userRef", "");
+
   const [showApptmnts, setShowApptmnts] = useState(false);
 
   useEffect (() => {
-    console.log(userAuth);
+    console.log(userRef);
     console.log(showApptmnts);
-  }, [userAuth, showApptmnts])
+  }, [userRef, showApptmnts])
 
   
   //add new user
@@ -39,13 +44,14 @@ function App() {
         console.log('data?', data["userRef"])
 
         if(data["msg"] == "User already exists"){
-          setAuth(() => {
-            return {
-              LoggedIn : true,
-              Ref : data["userRef"],
-              hasRDV : false
-            }
-          })
+          setAuth(data["userRef"])
+          // setAuth(() => {
+          //   return {
+          //     LoggedIn : true,
+          //     Ref : data["userRef"],
+          //     hasRDV : false
+          //   }
+          // })
         }
       } 
       catch(error) {
@@ -69,12 +75,15 @@ function App() {
          <Route path='/' element={
            <>
            <div className="container">
-            {!userAuth.LoggedIn && <Authenticate onAdd={addUser} />}
+            {/* {!userAuth.LoggedIn && <Authenticate onAdd={addUser} />} */}
+            {!userRef && <Authenticate onAdd={addUser} />}
               <div className="flex flex-end">
-                {userAuth.LoggedIn && <Button addClass="border bold" btnName='Make an appointment' color='green' bgColor="white" link='/slots' />}
+                {/* {userAuth.LoggedIn && <Button addClass="border bold" btnName='Make an appointment' color='green' bgColor="white" link='/slots' />} */}
+                {userRef && <Button addClass="border bold" btnName='Make an appointment' color='green' bgColor="white" link='/slots' />}
               </div>
             
-            {userAuth.LoggedIn && <GetAppointments userRef={userAuth.Ref} />}
+            {/* {userAuth.LoggedIn && <GetAppointments userRef={userAuth.Ref} />} */}
+            {userRef && <GetAppointments userRef={userRef} />}
             
             {/* {showApptmnts && <Appointments userRef={userAuth.Ref} showApptmnts={showApptmnts} />} */}
             </div>
@@ -84,15 +93,13 @@ function App() {
           <Route path='/appointments' element={
             <>
             <div className="container">
-            <Appointments userRef={userAuth.Ref} />
+            {/* <Appointments userRef={userAuth.Ref} /> */}
+            <Appointments userRef={userRef} />
             </div>
             </>
           } />
        
-        </Routes>
-     
-      <Routes>
-      <Route path='/slots' element={<Slots />} />
+          <Route path='/slots' element={<Slots />} />
       </Routes>
       </Router>
     </>

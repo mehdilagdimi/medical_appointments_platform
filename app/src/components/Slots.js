@@ -1,46 +1,63 @@
-import axios from "axios"
-import { useState, useEffect } from "react";
+import axios from "axios";
+import { useState, useEffect, useRef } from "react";
 
 import InputField from "./InputField";
 import Button from "./Button";
 
-const Slots = ({ apptmnt }) => {
+const Slots = () => {
   const mSlots = [9, 10, 11];
   const eSlots = [14, 15, 16, 17];
-  const [reserved, setResreved] = useState([]);
+  const [reserved, setReserved] = useState([]);
 
-  const [apptmntState, setApptmntState] = useState("black");
+  // const [apptmntState, setApptmntState] = useState("");
+  const currentSlot = useRef();
+  const [Clr, setClr] = useState("black");
 
   const [date, setDate] = useState();
 
   useEffect(() => {
     console.log(date);
     //when date change verify which slots are vacant
-    axios.get(`http://localhost/Medical%20appointments%20platform/api/appointments/getReserved/${date}`)
-    .then((response) => (
-      setResreved(response.data)
-    ));
-
+    if (date) {
+      axios
+        .get(
+          `http://localhost/Medical%20appointments%20platform/api/appointments/getReserved/${date}`
+        )
+        .then((response) =>
+          setReserved(response.data)
+          // console.log(response.data)
+        );
+    }
   }, [date]);
 
   useEffect(() => {
-    reserved.forEach((time => {
-      if(time < 14) {
-        mSlots.forEach(slot => {
-          if(slot == time) {
-            setApptmntState("red");
-          }
-        })
-      } else {
-        eSlots.forEach(slot => {
-          if(slot == time) {
-            setApptmntState("red");
-          }
-        })
-      }
-    }))
-  }, [reserved])
-
+    console.log("curret slot", currentSlot.current)
+    console.log(reserved);
+    // if (reserved) {
+    //   reserved.forEach((time) => {
+    //     console.log(time)
+    //     if (time < 14) {
+    //       mSlots.forEach((slot) => {
+    //         if (slot == time) {
+    //           setApptmntState("red");
+    //         } else {
+    //           // setApptmntState("black");
+    //         }
+    //       });
+    //     } else {
+    //       eSlots.forEach((slot) => {
+    //         console.log(slot)
+    //         if (slot == time) {
+    //           setApptmntState("red");
+              
+    //         } else {
+    //           // setApptmntState("black");
+    //         }
+    //       });
+    //     }
+    //   });
+    // }
+  }, [reserved]);
 
   return (
     <>
@@ -54,32 +71,43 @@ const Slots = ({ apptmnt }) => {
         </div>
 
         <div className="flex flex-evenly flex-row">
-          <div className="flex flex-column"> Morning
-            {mSlots.map((slot) => (
+          <div className="flex flex-column">
+            Morning
+          
+            {mSlots.map((slot) => {
+              const isReserved = reserved.includes(slot);
+              
+              return (
               <>
-                <div className="apptmnt" style={{color: apptmntState}}>
+              <div key={mSlots.indexOf(slot)} ref={currentSlot} className={`apptmnt ${isReserved && "inactiveApptmnt"}`} >
+                <h3>Rendez-Vous </h3>
+                <p>Date : {date}</p>
+                <p>Time : {slot}H</p>
+              </div>
+            </>
+              )
+          })}
+
+          </div>
+          <div className="flex flex-column">
+            Evening
+            {eSlots.map((slot) => 
+            {
+              const isReserved = reserved.includes(slot);
+              return (
+              <>
+                <div key={eSlots.indexOf(slot)+3} ref={currentSlot} className={`apptmnt ${isReserved && "inactiveApptmnt"}`} >
+                {/* <div key={mSlots.indexOf(slot)} ref={currentSlot} className="apptmnt" style={{ color: apptmntState }}> */}
                   <h3>Rendez-Vous </h3>
                   <p>Date : {date}</p>
                   <p>Time : {slot}H</p>
-            
                 </div>
               </>
-            ))}
-          </div>
-          <div className="flex flex-column">Evening
-            {eSlots.map((slot) => (
-              <>
-                <div className="apptmnt" style={{color: apptmntState}}>
-                  <h3>Rendez-Vous  </h3>
-                  <p>Date : {date}</p>
-                  <p>Time : {slot}H</p>
- 
-                </div>
-              </>
-            ))}
+              )
+          })}
           </div>
         </div>
-        <div class="flex flex-end">
+        <div className="flex flex-end">
           <p>
             <Button link={"/"} btnName={"Back"} color="white" />
           </p>
