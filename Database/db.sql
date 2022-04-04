@@ -74,10 +74,10 @@ ALTER TABLE public.slotsorder OWNER TO mehdilagdimi;
 --
 
 CREATE TABLE public.users (
-    userref character varying(32) NOT NULL,
+    userref character varying(64) NOT NULL,
     fname character varying(30) NOT NULL,
     lname character varying(30) NOT NULL,
-    birthdate timestamp without time zone NOT NULL,
+    birthdate date NOT NULL,
     passw character varying(256) NOT NULL,
     createdat timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
@@ -97,6 +97,10 @@ ALTER TABLE ONLY public.appointments ALTER COLUMN apptmntid SET DEFAULT nextval(
 --
 
 COPY public.appointments (apptmntid, slotid, userref, apptmntdate, createdat) FROM stdin;
+2	1	9442765c994c84d3f8e8f30088e0fdaf	2022-12-11	2022-04-03 00:05:24.925842
+3	1	9442765c994c84d3f8e8f30088e0fdaf	2022-12-07	2022-04-04 10:23:41.546953
+4	4	9442765c994c84d3f8e8f30088e0fdaf	2022-04-02	2022-04-04 10:25:07.469166
+5	5	9442765c994c84d3f8e8f30088e0fdaf	2022-12-23	2022-04-04 10:25:52.528233
 \.
 
 
@@ -105,6 +109,13 @@ COPY public.appointments (apptmntid, slotid, userref, apptmntdate, createdat) FR
 --
 
 COPY public.slotsorder (slotid, starttime) FROM stdin;
+1	9
+2	10
+3	11
+4	14
+5	15
+6	16
+7	17
 \.
 
 
@@ -113,6 +124,8 @@ COPY public.slotsorder (slotid, starttime) FROM stdin;
 --
 
 COPY public.users (userref, fname, lname, birthdate, passw, createdat) FROM stdin;
+9442765c994c84d3f8e8f30088e0fdaf	MEHDI	LAGDIMI	2022-04-01	9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0	2022-04-01 17:28:17.19226
+3f750d376667772fd5d174e12c1457dc	MEHDI	LAGDIMI	2022-04-02	9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0	2022-04-02 14:10:22.685194
 \.
 
 
@@ -120,7 +133,7 @@ COPY public.users (userref, fname, lname, birthdate, passw, createdat) FROM stdi
 -- Name: appointments_apptmntid_seq; Type: SEQUENCE SET; Schema: public; Owner: mehdilagdimi
 --
 
-SELECT pg_catalog.setval('public.appointments_apptmntid_seq', 1, false);
+SELECT pg_catalog.setval('public.appointments_apptmntid_seq', 5, true);
 
 
 --
