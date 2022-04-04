@@ -16,7 +16,7 @@ const Slots = ({ apptmnt }) => {
   useEffect(() => {
     console.log(date);
     //when date change verify which slots are vacant
-    axios.get(`http://localhost/Medical%20appointments%20platform/api/appointments/getResreved/${date}`)
+    axios.get(`http://localhost/Medical%20appointments%20platform/api/appointments/getReserved/${date}`)
     .then((response) => (
       setResreved(response.data)
     ));

@@ -48,10 +48,27 @@
 
         }
 
-        public function getReserved($date){
-            
+        public function getReserved($date = null){
+            if($date){
+                $this->apptmntDate = htmlspecialchars(strip_tags($date));
+                $apptmnts = $this->apptmntModel->getSpecific("apptmntdate", $this->apptmntDate, $this->apptmntDate);
 
+                if($apptmnts){
+                    $timeArr = [];
+
+                    foreach($apptmnts as $apptmnt){
+                        $time = $this->slotModel->getSlot($apptmnt->slotid);
+                        array_push($timeArr, $time);
+                    }
+                    echo json_encode($timeArr);
+                    // foreach($timeArr as $slotid){
+                    //     $this->slotModel->getSlot($slotid);
+                    // }
+                }
+                return;
+            }
         }
+
 
         public function makeAppointment(){
 

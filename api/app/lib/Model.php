@@ -25,7 +25,10 @@
         }
 
         public function getSpecific($col, $constraint, $orderBy){
-            $this->db->query("SELECT * FROM $this->table WHERE $col = '$constraint' ORDER BY $orderBy DESC");
+            $this->db->query("SELECT * FROM $this->table WHERE $col = :constrnt ORDER BY :ordrby DESC");
+            $this->db->bind(":constrnt",$constraint);
+            $this->db->bind(":ordrby", $orderBy);
+
             $result = $this->db->resultSet();
             return $result;
         }
