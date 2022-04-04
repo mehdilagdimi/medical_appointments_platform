@@ -48,6 +48,11 @@
 
         }
 
+        public function getReserved($date){
+            
+
+        }
+
         public function makeAppointment(){
 
         $data = json_decode(file_get_contents("php://input"));
