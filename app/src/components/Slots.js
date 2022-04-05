@@ -67,7 +67,10 @@ const Slots = ({ userRef }) => {
       .then((response) => {
         console.log(response.data)
           setIsCreated(true);
-        navigate('/appointments')
+          setTimeout(() => {
+            navigate('/appointments')
+          }, 500)
+        // navigate('/appointments')
       });
   };
 

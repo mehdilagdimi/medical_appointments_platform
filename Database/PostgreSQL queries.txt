@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS users (
     PRIMARY KEY (userRef)
 );
 
-CREATE TABLE IF NOT EXISTS  slotsOrder(
+CREATE TABLE IF NOT EXISTS  slotsOrder (
 	slotID INT NOT NULL,
     startTime INT NOT NULL,
     PRIMARY KEY (slotID)
