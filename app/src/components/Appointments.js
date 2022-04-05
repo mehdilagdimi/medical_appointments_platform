@@ -5,7 +5,7 @@ import Button from "./Button";
 import Appointment from "./Appointment";
 
 
-const Appointments = ({ showApptmnts, userRef }) => {
+const Appointments = ({ showApptmnts, userRef, addApptmnt }) => {
   const [apptmnts, setApptmnts] = useState([]);
   const navigate = useNavigate();
   const [Loading, setLoading] = useState(true);
@@ -44,20 +44,6 @@ const Appointments = ({ showApptmnts, userRef }) => {
       .then(async (res) => {
         if (res.ok) {
           const data = await res.json();
-
-          // if(data == "User has not made any appoinment"){
-          //   setApptmnts([]);
-          //   setLoading(false);
-          //   // console.log("test");
-          //   return data;
-          // }
-          // console.log("test");
-
-          // setApptmnts(data);
-
-          // console.log(apptmnts);
-
-          // setLoading(false);
 
           return data;
         } else {

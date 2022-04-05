@@ -16,7 +16,7 @@ const Appointment = ({ apptmnt, onDelete, onDClick }) => {
         <p>Time : {apptmnt.starttime}H</p>
         <p>Date : {apptmnt.apptmntdate}</p>
 
-        <div class="flex">
+        <div className="flex">
           <p>
             <Link to={`/appointments/${apptmnt.apptmntid}`}>View Details</Link>
           </p>

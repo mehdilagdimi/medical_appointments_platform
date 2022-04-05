@@ -99,7 +99,7 @@ function App() {
             </>
           } />
        
-          <Route path='/slots' element={<Slots />} />
+          <Route path='/slots' element={<Slots userRef = {userRef} />} />
       </Routes>
       </Router>
     </>

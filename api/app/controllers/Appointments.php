@@ -73,13 +73,17 @@
         public function makeAppointment(){
 
         $data = json_decode(file_get_contents("php://input"));
+        // echo json_encode($data);
+        // return; 
 
         if($data) {
             $this->userRef = $data->userRef;
-            $this->slot = $data->slot;
+            $this->slot = $data->startTime;
             $this->apptmntDate = $data->apptmntDate;
 
-            $result = $this->apptmntModel->addAppointment($this->userRef,  $this->slot, $this->apptmntDate);
+            $this->slotid = $this->slotModel->getSlotID($this->slot);
+
+            $result = $this->apptmntModel->addAppointment($this->userRef,  $this->slotid, $this->apptmntDate);
             if($result === 1){
                 echo json_encode(array("msg" => "Appointment added successfully", "userRef" => $this->userRef));
             } else if(!$result) {

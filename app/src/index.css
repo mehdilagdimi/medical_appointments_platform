@@ -64,6 +64,12 @@ body {
   background-color: white !important;
   cursor: not-allowed !important;
 }
+.selectedApptmnt{
+  color : rgb(33, 163, 0);
+  background-color: rgb(255, 255, 255) !important;
+  cursor: pointer !important;
+  border : 2px solid rgb(33, 163, 0);
+}
 .header {
   display: flex;
   justify-content: space-between;

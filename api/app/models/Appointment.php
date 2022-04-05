@@ -31,16 +31,12 @@ class Appointment extends Model
     {
        
         $this->db->query("SELECT 1 FROM $this->table WHERE slotID=:slotID AND apptmntDate=:apptmntDate");
-        $this->db->bind(':slotID', $this->$slotId);
-        $this->db->bind(':apptmntDate', $this->$apptmntDate);
+        $this->db->bind(':slotID', $slotId);
+        $this->db->bind(':apptmntDate', $apptmntDate);
         $result = $this->db->single();
         return $result;
     }
-    // public function deleteReserv($reservID){
-    //     // $reservID = $_POST['id_user'];
-    //     $this->db->query("DELETE FROM $this->table WHERE reservID='$reservID'");
-    //     $this->db->execute();
-    // }
+ 
 
     public function addAppointment($userRef, $slotId, $apptmntDate)
     {
