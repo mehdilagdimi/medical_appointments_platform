@@ -1,15 +1,29 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import Button from "./Button";
 import Appointment from "./Appointment";
 
-
-const Appointments = ({ showApptmnts, userRef, addApptmnt }) => {
+const Appointments = ({ showApptmnts, userRef }) => {
   const [apptmnts, setApptmnts] = useState([]);
   const navigate = useNavigate();
   const [Loading, setLoading] = useState(true);
 
+  const onDelete = async (apptmntid) => {
+    await axios.delete(
+      `http://localhost/Medical%20appointments%20platform/api/appointments/deleteAppointment/${apptmntid}`
+    ).then(res => {
+      console.log(res.data.json)
+      console.log(res.status)
+      if(res.status == 200){
+        console.log(`Appointment with id : ${apptmntid}, has been deleted`);
+      }
+    })
+
+    return true;
+  };
+  
   useEffect(() => {
     const getAppointments = async () => {
       const data = await fetchAppointments(userRef);
@@ -27,15 +41,9 @@ const Appointments = ({ showApptmnts, userRef, addApptmnt }) => {
     };
 
     getAppointments();
-  }, []);
+  }, [onDelete]);
 
-  useEffect(() => {
-    // fetchAppointments();
-    // console.log(typeof(apptmnts));
-    console.log(apptmnts.length);
-    // console.log(apptmnts[0]);
-    // console.log(apptmnts[0].apptmntdate);
-  }, [apptmnts, showApptmnts, Loading, userRef]);
+ 
 
   const fetchAppointments = async (userRef) => {
     const data = fetch(
@@ -60,12 +68,7 @@ const Appointments = ({ showApptmnts, userRef, addApptmnt }) => {
     return data;
   };
 
-  const onDelete = () => {
-    return true;
-  };
-  const onDClick = () => {
-    return true;
-  };
+  
 
   return Loading ? (
     <h3>Loading</h3>
@@ -81,7 +84,6 @@ const Appointments = ({ showApptmnts, userRef, addApptmnt }) => {
             key={apptmnt.apptmntid}
             apptmnt={apptmnt}
             onDelete={onDelete}
-            onDClick={onDClick}
           />
         ))
       ) : (
@@ -91,8 +93,14 @@ const Appointments = ({ showApptmnts, userRef, addApptmnt }) => {
       {/* <p><Button link={'/'} btnName={"Return"} onClick={() => navigate(-1)} /></p> */}
       <div>
         <p>
-          <Button link={"/"} btnName={"Back"} color='white'/>
-          <Button addClass="border bold" btnName='Make an appointment' color='green' bgColor="black" link='/slots' />
+          <Button link={"/"} btnName={"Back"} color="white" />
+          <Button
+            addClass="border bold"
+            btnName="Make an appointment"
+            color="green"
+            bgColor="white"
+            link="/slots"
+          />
         </p>
       </div>
     </>

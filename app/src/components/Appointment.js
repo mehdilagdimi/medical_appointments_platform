@@ -2,7 +2,7 @@
 import { FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const Appointment = ({ apptmnt, onDelete, onDClick }) => {
+const Appointment = ({ apptmnt, onDelete}) => {
   return (
     <>
       <div className="apptmnt">

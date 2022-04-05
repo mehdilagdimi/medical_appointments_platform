@@ -7,6 +7,7 @@ class Appointment extends Model
     public $apptmntDate;
     private $userRef;
     public $createdAt;
+    private $apptmntID;
 
     public function __construct()
     {
@@ -55,6 +56,18 @@ class Appointment extends Model
             return 1;
         } else {
             return -1;
+        };
+    }
+
+    public function deleteAppointment($apptmntID) {
+        $this->apptmntID = htmlspecialchars(strip_tags($apptmntID));
+        $this->db->query("DELETE FROM $this->table WHERE apptmntID = :apptmntID");
+        $this->db->bind(":apptmntID", $this->apptmntID);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
         };
     }
 

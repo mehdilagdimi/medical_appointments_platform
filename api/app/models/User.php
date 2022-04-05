@@ -79,10 +79,10 @@
                 return $result;
         }
  
-        public function deleteUser($userID){
-            $this->db->query("DELETE FROM $this->table WHERE userID='$userID'");
-            $this->db->execute();
-        }
+        // public function deleteUser($userID){
+        //     $this->db->query("DELETE FROM $this->table WHERE userID='$userID'");
+        //     $this->db->execute();
+        // }
        
     }
 ?> 

@@ -1,7 +1,7 @@
 <?php
      header("Access-Control-Allow-Origin: *");
      header("Content-Type: application/json");
-     header("Access-Control-Allow-Methods: GET, POST");
+     header("Access-Control-Allow-Methods: GET, POST, DELETE");
      header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With");
 
     require_once "Slots.php";
@@ -11,6 +11,7 @@
         public $slotid;
         public $startTime;
         public $apptmntDate;
+        private $apptmntID;
 
         public function __construct (){
             $this->apptmntModel = $this->model('Appointment');
@@ -96,6 +97,17 @@
             echo json_encode("No data has been received from frontend");
         };            
             
+        }
+
+        public function deleteAppointment($apptmntid) {
+            if($apptmntid){
+                if($this->apptmntModel->deleteAppointment($apptmntid)){
+                    echo json_encode("Appointment successfully deleted");
+                } else {
+                    echo json_encode("Failed to delete appointment/Invalid id");
+                }
+            }
+
         }
     }
 ?>
