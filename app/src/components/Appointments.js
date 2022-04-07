@@ -11,19 +11,22 @@ const Appointments = ({ showApptmnts, userRef }) => {
   const [Loading, setLoading] = useState(true);
 
   const onDelete = async (apptmntid) => {
-    await axios.delete(
-      `http://localhost/Medical%20appointments%20platform/api/appointments/deleteAppointment/${apptmntid}`
-    ).then(res => {
-      console.log(res.data.json)
-      console.log(res.status)
-      if(res.status == 200){
-        console.log(`Appointment with id : ${apptmntid}, has been deleted`);
-      }
-    })
+    await axios
+      .delete(
+        `http://localhost/Medical%20appointments%20platform/api/appointments/deleteAppointment/`,
+        { data: { apptmntid: apptmntid } }
+      )
+      .then((res) => {
+        console.log(res.data.json);
+        console.log(res.status);
+        if (res.status == 200) {
+          console.log(`Appointment with id : ${apptmntid}, has been deleted`);
+        }
+      });
 
     return true;
   };
-  
+
   useEffect(() => {
     const getAppointments = async () => {
       const data = await fetchAppointments(userRef);
@@ -42,8 +45,6 @@ const Appointments = ({ showApptmnts, userRef }) => {
 
     getAppointments();
   }, [onDelete]);
-
- 
 
   const fetchAppointments = async (userRef) => {
     const data = fetch(
@@ -67,8 +68,6 @@ const Appointments = ({ showApptmnts, userRef }) => {
     // setLoading(false);
     return data;
   };
-
-  
 
   return Loading ? (
     <h3>Loading</h3>

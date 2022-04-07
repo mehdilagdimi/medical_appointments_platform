@@ -99,14 +99,19 @@
             
         }
 
-        public function deleteAppointment($apptmntid) {
-            if($apptmntid){
-                if($this->apptmntModel->deleteAppointment($apptmntid)){
-                    echo json_encode("Appointment successfully deleted");
-                } else {
-                    echo json_encode("Failed to delete appointment/Invalid id");
-                }
+        public function deleteAppointment() {
+            $data = json_decode(file_get_contents("php://input"));
+            if($data){
+                $this->apptmntID = $data->apptmntid;
+                
+                    if($this->apptmntModel->deleteAppointment($this->apptmntID)){
+                        echo json_encode("Appointment successfully deleted");
+                    } else {
+                        echo json_encode("Failed to delete appointment/Invalid id");
+                    }
+            
             }
+           
 
         }
     }
