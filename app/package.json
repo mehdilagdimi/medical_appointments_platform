@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "medical_appointments_platform",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
