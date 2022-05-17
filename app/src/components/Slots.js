@@ -95,7 +95,7 @@ const Slots = ({ userRef }) => {
                 <>
                   <div
                     key={mSlots.indexOf(slot)}
-                    onDoubleClick={() => addApptmnt(date, slot)}
+                    onClick={() => addApptmnt(date, slot)}
                     ref={currentSlot}
                     // className={`apptmnt ${isReserved && "inactiveApptmnt"} `}
                     className={`apptmnt ${isReserved && "inactiveApptmnt"} ${selected && "selectedApptmnt"} `}
@@ -117,7 +117,7 @@ const Slots = ({ userRef }) => {
                 <>
                   <div
                     key={eSlots.indexOf(slot) + 3}
-                    onDoubleClick={() => addApptmnt(date, slot)}
+                    onClick={() => addApptmnt(date, slot)}
                     ref={currentSlot}
                     // className={`apptmnt ${isReserved && "inactiveApptmnt"} `}
                     className={`apptmnt ${isReserved && "inactiveApptmnt"} ${selected && "selectedApptmnt"}`}
